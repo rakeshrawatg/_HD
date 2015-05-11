@@ -8,6 +8,7 @@ var _HD;
 (function () {
 	
 	_HD = function (tag, content) {
+		content = content || '';
 		return new HtmlDecorator(tag, content);
 	}
 	
@@ -91,6 +92,16 @@ var _HD;
 			html = type === 'string' ? html : html.html();
 			content = content + html;
 			
+			return this;
+		}
+		
+		this.content = function (data) {
+			content = data;
+			return this;
+		}
+		
+		this.empty = function () {
+			content = '';
 			return this;
 		}
 		

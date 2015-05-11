@@ -7,9 +7,9 @@ var _HD;
 
 (function () {
 	
-	_HD = function (tag, content) {
+	_HD = function (tag, content, selfClosing) {
 		content = content || '';
-		return new HtmlDecorator(tag, content);
+		return new HtmlDecorator(tag, content, selfClosing);
 	}
 	
 	
@@ -28,7 +28,7 @@ var _HD;
 			html += '<' + tag;
 			html += css.length ? ' class="' + css.join(' ') + '"' : '';
 			html += attrs.length ? ' ' + attrs.join(' ') : '';
-			html += '>';
+			html += selfClosing ? ' />' : '>';
 			html += content || '';
 			html += selfClosing ? '' : '</' + tag + '>';
 			
@@ -86,7 +86,7 @@ var _HD;
 		}
 		
 		
-		this.append = function (html	) {
+		this.append = function (html) {
 			var type = typeof html;
 			
 			html = type === 'string' ? html : html.html();

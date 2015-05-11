@@ -20,8 +20,7 @@ html += '</table>';
 
 Using _HD:
 ```
-var css = ['one two'],
-    cell = [1, 2, 3], 
+var cell = [1, 2, 3], 
     html;
     
 html 
@@ -29,5 +28,5 @@ html
   .append(_HD('td', cell[0]))
   .append(_HD('td', cell[1]))
   .append(_HD('td', cell[2]))
-  .wrap('table').css(['one', 'two']);
+  .wrap('table').addClass('one two').html();
 ```

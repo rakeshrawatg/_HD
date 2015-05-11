@@ -13,12 +13,10 @@ var _HD;
 	
 	
 	function HtmlDecorator (tag, content, selfClosing) {
-		var cssList = [], 
-			attrList = [];
+		var css = [], 
+			attrs = [];
 		
 	
-		
-		
 		this.html = function () {
 			var html = '';
 			
@@ -27,8 +25,8 @@ var _HD;
 			}
 			
 			html += '<' + tag;
-			html += cssList.length ? ' class="' + cssList.join(' ') + '"' : '';
-			html += attrList.length ? ' ' + attrList.join(' ') : '';
+			html += css.length ? ' class="' + css.join(' ') + '"' : '';
+			html += attrs.length ? ' ' + attrs.join(' ') : '';
 			html += '>';
 			html += content || '';
 			html += selfClosing ? '' : '</' + tag + '>';
@@ -39,34 +37,38 @@ var _HD;
 		this.wrap = function (tag) {
 			return new HtmlDecorator(tag, this.html());
 		}
-			
-		this.css = function (value) {
-			var type = typeof value;
-			
-			if (type === 'string') {
-				cssList.push(value);
-			} else if (type === 'object' && Array.prototype.constructor === value.constructor) {
-				cssList = cssList.concat(value);
-			} else if (type === 'object') {
-				for (var key in value) {
-					if (value.hasOwnProperty(key) && value[key] === true) {
-						cssList.push(key); 
-					}
-				}
-			} 
-			
+		
+		this.addClass = function (value) {
+			var arr = this.trim(value).split(' ');
+			css = css.concat(arr); 
+
 			return this;
 		}
-		
+
+		this.removeClass = function (value) {
+			var values = this.trim(value).split(' ');
+			
+			for (var i = 0; i < css.length; i++) {
+				for (var j = 0; j < values.length; j++) {
+					if (css[i] == values[j]) {
+						css.splice(i, 1);
+						values.splice(j, 1);
+					}
+				}
+			}
+
+			return this;
+		}
+
 		
 		this.attr = function (attr, value, condition) {
 
 			if (arguments.length === 3) {
 				if (arguments[2] === true) {
-					attrList.push(attr + '="' + value + '"'); 	
+					attrs.push(attr + '="' + value + '"'); 	
 				}
 			} else {
-				attrList.push(attr + '="' + value + '"'); 
+				attrs.push(attr + '="' + value + '"'); 
 			}
 			
 			return this;
@@ -90,6 +92,10 @@ var _HD;
 			content = content + html;
 			
 			return this;
+		}
+		
+		this.trim = function (value) {
+			return value.replace(/(\s+$)|(^\s+)/g, '').replace(/\s+/g, ' ');
 		}
 	}
 
